@@ -1,0 +1,81 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccounts_functiond1e0a12c91bf_name": {
+            "defaultValue": "functiond1e0a12c91bf",
+            "type": "string"
+        },
+        "serverfarms_NorthEuropePlan_name": {
+            "defaultValue": "NorthEuropePlan",
+            "type": "string"
+        },
+        "sites_JCQueueProcessor_name": {
+            "defaultValue": "JCQueueProcessor",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "comments": "Generalized from resource: '/subscriptions/956ce54c-a40b-4895-b229-dc75174b0787/resourceGroups/qp/providers/Microsoft.Storage/storageAccounts/functiond1e0a12c91bf'.",
+            "type": "Microsoft.Storage/storageAccounts",
+            "sku": {
+                "name": "Standard_LRS",
+                "tier": "Standard"
+            },
+            "kind": "Storage",
+            "name": "[parameters('storageAccounts_functiond1e0a12c91bf_name')]",
+            "apiVersion": "2016-01-01",
+            "location": "northeurope",
+            "tags": {},
+            "properties": {},
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/956ce54c-a40b-4895-b229-dc75174b0787/resourceGroups/QP/providers/Microsoft.Web/serverfarms/NorthEuropePlan'.",
+            "type": "Microsoft.Web/serverfarms",
+          "sku": {
+            "capacity": 0,
+            "family": "Y",
+            "name": "F1",
+            "size": "Y1",
+            "tier": "Standard"
+          },
+            "kind": "functionapp",
+            "name": "[parameters('serverfarms_NorthEuropePlan_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "North Europe",
+            "properties": {
+                "name": "[parameters('serverfarms_NorthEuropePlan_name')]",
+                "numberOfWorkers": 0
+            },
+            "resources": [],
+            "dependsOn": []
+        },
+        {
+            "comments": "Generalized from resource: '/subscriptions/956ce54c-a40b-4895-b229-dc75174b0787/resourceGroups/QP/providers/Microsoft.Web/sites/JCQueueProcessor'.",
+            "type": "Microsoft.Web/sites",
+            "kind": "functionapp",
+            "name": "[parameters('sites_JCQueueProcessor_name')]",
+            "apiVersion": "2015-08-01",
+            "location": "North Europe",
+            "properties": {
+                "name": "[parameters('sites_JCQueueProcessor_name')]",
+                "hostNames": [
+                    "jcqueueprocessor.azurewebsites.net"
+                ],
+                "enabledHostNames": [
+                    "jcqueueprocessor.azurewebsites.net",
+                    "jcqueueprocessor.scm.azurewebsites.net"
+                ],
+                "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_NorthEuropePlan_name'))]"
+            },
+            "resources": [],
+            "dependsOn": [
+                "[resourceId('Microsoft.Web/serverfarms', parameters('serverfarms_NorthEuropePlan_name'))]"
+            ]
+        }
+    ]
+}
